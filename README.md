@@ -2,10 +2,10 @@
 
 ## 背景
 偶然的一个发现，学校教务处网站有一个小小的漏洞，会泄露全校所有学生的学号、姓名、及照片。这个漏洞存在于新版教务处里，当登录教务处之后，点击“学生个人查询”-->“基本查询”，会出现当前登录学生的所有个人资料，同时附带个人的证件照，并且证件照之上附带个人的姓名和学号信息，类似于下图：
-![screen1](http://github.com/Root-lee/spider_photos_nuaa/raw/master/screen1.png)
+![screen1](https://github.com/Root-lee/spider_photos_nuaa/blob/master/screen1.png)
 漏洞便在这个照片之上。
 我们右击图片查看图片属性：
-![screen2](http://github.com/Root-lee/spider_photos_nuaa/raw/master/screen2.png)
+![screen2](https://github.com/Root-lee/spider_photos_nuaa/blob/master/screen2.png)
 然后将图片地址粘贴在浏览器的地址栏然后点回车，在浏览器里我们得到了我们的证件照。
 我们注意到图片的地址是这种形式的：
 *.../EASys/Controls/ImageHandler.ashx?ImageName=151220101&BinaryType=xh*

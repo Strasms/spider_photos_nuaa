@@ -13,7 +13,7 @@ headers = {'Host':'ded.nuaa.edu.cn',
            'Referer':'http://ded.nuaa.edu.cn/JwSys/Manager/Messages.aspx?OPID=01706',
            'Cookie' :'mycookie'}
 
-colleges = ['08']   #学院
+colleges = ['12']   #学院
 years = ['12']      #年级
 specials = ['1','2','3','4','5','6','7','8','9']   #专业
 num_classes = ['01','02','03','04','05','06','07']    #班级
@@ -33,7 +33,7 @@ for college in colleges:
                         student = college + year + special + num_class + num2str(people)   #学号组成方法
                         pic_url='http://ded.nuaa.edu.cn/JwSys/Manager/Module/EASys/Controls/ImageHandler.ashx?ImageName=%s&BinaryType=xh' % student
                         try:
-                            r = requests.get(pic_url,headers=headers,timeout=20)   #GET命令获取图片
+                            r = requests.Session().get(pic_url,headers=headers,timeout=40)   #GET命令获取图片
                         except:
                             break
                         picpath = college+'\\'+year+'\\'+special+num_class   #图片保存路径

@@ -13,7 +13,10 @@ headers = {'Host':'ded.nuaa.edu.cn',
            'Referer':'http://ded.nuaa.edu.cn/JwSys/Manager/Messages.aspx?OPID=01706',
            'Cookie' :'mycookie'}
 
-colleges = ['12']   #学院
+s=requests.Session()  #创建会话，可以保持cookie
+s.headers.update(headers)  #默认headers参数
+
+colleges = ['07','10','16']   #学院
 years = ['12']      #年级
 specials = ['1','2','3','4','5','6','7','8','9']   #专业
 num_classes = ['01','02','03','04','05','06','07']    #班级
@@ -28,27 +31,26 @@ for college in colleges:
     for year in years:
         for special in specials:
             for num_class in num_classes:
+                error_count=0
                 for people in range(1,40):
-                    while True:
-                        student = college + year + special + num_class + num2str(people)   #学号组成方法
-                        pic_url='http://ded.nuaa.edu.cn/JwSys/Manager/Module/EASys/Controls/ImageHandler.ashx?ImageName=%s&BinaryType=xh' % student
+                    if error_count==3:
+                        break
+                    student = college + year + special + num_class + num2str(people)   #学号组成方法
+                    picpath = college+'\\'+year+'\\'+special+num_class   #图片保存路径
+                    pic_url='http://ded.nuaa.edu.cn/JwSys/Manager/Module/EASys/Controls/ImageHandler.ashx?ImageName=%s&BinaryType=xh' % student
+                    while True:    #一直到成功发出get请求为止
                         try:
-                            r = requests.Session().get(pic_url,headers=headers,timeout=40)   #GET命令获取图片
-                        except:
+                            r = s.get(pic_url,timeout=40)   #GET命令获取图片
                             break
-                        picpath = college+'\\'+year+'\\'+special+num_class   #图片保存路径
-                        if r.url==pic_url: 
-                            break      #用响应url来验证Cookie有效性
-                        else:
-                            print 'Cookie is not effective,Please input another Cookie:'
-                            headers['Cookie']=raw_input()
+                        except:
+                            print "timeout! Try again..."
                     try:
-                    #Image.open(StringIO(r.content)).show()    # 显示图片
                         try:
                             Image.open(StringIO(r.content))
                             if not os.path.exists(picpath):
                                 os.makedirs(picpath)
                         except:
+                            error_count=error_count+1
                             print 'no class!'
                         Image.open(StringIO(r.content)).save('%s/%s.jpg' % (picpath,student))   #保存图片
                         print student+'succesful!'

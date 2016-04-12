@@ -45,12 +45,8 @@ for college in colleges:
                         try:
                             print "===============\n" + "requesting photo of " + student
                             r = s.get(pic_url,timeout=40)   #GET命令获取图片
-                            if r.url == pic_url:            #返回url等于请求url则说明cookie有效
-                                break
-                            else:
-                                print 'Please input another Cookie:'
-                                headers['Cookie'] = raw_input()
-                                s.headers.update(headers)
+                            if r.cookies.get_dict():        #保持cookie有效
+                                s.cookies.update(r.cookies)
                         except:
                             time.sleep(1)   #1秒后重试
                             print "timeout! Try again..."

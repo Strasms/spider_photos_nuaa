@@ -12,13 +12,14 @@ headers = {'Host':'ded.nuaa.edu.cn',
            'Accept-Encoding':'gzip, deflate',
            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:44.0) Gecko/20100101 Firefox/44.0',
            'Referer':'http://ded.nuaa.edu.cn/JwSys/Manager/Messages.aspx?OPID=01706',
+           'Connection':'keep-alive',
            'Cookie' :'mycookie'}
 
 s=requests.Session()  #创建会话，可以保持cookie
 s.headers.update(headers)  #默认headers参数
 
-colleges = ['07','10','16']   #学院
-years = ['12']      #年级
+colleges = ['11','12','15','19']   #学院
+years = ['11','13','14','15']      #年级
 specials = ['1','2','3','4','5','6','7','8','9']   #专业
 num_classes = ['01','02','03','04','05','06','07','08','09']    #班级
 
@@ -38,13 +39,18 @@ for college in colleges:
                         print "switch to next class !"
                         break
                     student = college + year + special + num_class + num2str(people)   #学号组成方法
-                    picpath = college+'\\'+year+'\\'+special+num_class   #图片保存路径
-                    pic_url='http://ded.nuaa.edu.cn/JwSys/Manager/Module/EASys/Controls/ImageHandler.ashx?ImageName=%s&BinaryType=xh' % student
-                    while True:    #一直到get请求发送成功时停止
+                    picpath = college+'/'+year+'/'+special+num_class   #图片保存路径
+                    pic_url='http://*****/JwSys/Manager/Module/EASys/Controls/ImageHandler.ashx?ImageName=%s&BinaryType=xh' % student
+                    while True:     #一直到get请求发送成功时停止
                         try:
                             print "===============\n" + "requesting photo of " + student
                             r = s.get(pic_url,timeout=40)   #GET命令获取图片
-                            break
+                            if r.url == pic_url:            #返回url等于请求url则说明cookie有效
+                                break
+                            else:
+                                print 'Please input another Cookie:'
+                                headers['Cookie'] = raw_input()
+                                s.headers.update(headers)
                         except:
                             time.sleep(1)   #1秒后重试
                             print "timeout! Try again..."

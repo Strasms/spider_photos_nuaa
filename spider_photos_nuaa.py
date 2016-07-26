@@ -47,6 +47,7 @@ for college in colleges:
                             r = s.get(pic_url,timeout=40)   #GET命令获取图片
                             if r.cookies.get_dict():        #保持cookie有效
                                 s.cookies.update(r.cookies)
+                            break
                         except:
                             time.sleep(1)   #1秒后重试
                             print "timeout! Try again..."
